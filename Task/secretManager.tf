@@ -6,5 +6,5 @@ resource "aws_secretsmanager_secret" "secrtmanager" {
 
 resource "aws_secretsmanager_secret_version" "secmanver" {
   secret_id     = aws_secretsmanager_secret.secrtmanager.id
-  secret_string = "superSecret-string-to-protect"
+  secret_string = tls_private_key.terra_key.private_key_pem
 }
