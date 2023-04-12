@@ -2,6 +2,6 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.myvpc.id
 
   tags = {
-    Name = "TerraformIGW"
+    Name = "${var.WS}_IGW"
   }
 }

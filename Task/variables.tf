@@ -27,3 +27,11 @@ variable ami {
 variable instance_type{
     type = string
 }
+
+variable WS {
+  type = string
+
+}
+variable vpc_name {
+  type = string
+}

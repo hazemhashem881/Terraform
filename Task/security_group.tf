@@ -1,44 +1,88 @@
-# ---- security group for ssh
-
-resource "aws_security_group" "terra_sq" {
-  name        = "project-sq"
-  description = "security group for bastion server"
+resource "aws_security_group" "SG-1" {
+  name        = "SSH-SG"
+  description = "Allow SSH"
   vpc_id      = module.network.vpc_id
-  tags = {
-    Name = "terraform_sq_22"
+
+  ingress {
+    description      = "Allow SSH"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
-}
-#----------- inbound traffic
-
-# allow ssh from anywhere
-resource "aws_security_group_rule" "sg_inbound_allow_all_Ssh" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.terra_sq.id
-}
-
-# security group for 3000 port
-resource "aws_security_group" "terra_sq2" {
-  name        = "project-sq2"
-  description = "security group open port 3000"
-  vpc_id      = module.network.vpc_id
-  tags = {
-    Name = "terraform_sq_3000"
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
+  tags = {
+    Name = "${var.region}-SG-1"
+  }
 }
-#------------------- inbound traffic
 
-#allow http traffic at port 8080
-resource "aws_security_group_rule" "sg_inbound_allow_http" {
-  type              = "ingress"
-  from_port         = 3000
-  to_port           = 3000
-  protocol          = "tcp"
-  cidr_blocks       = [var.vpc_cidr]
-  security_group_id = aws_security_group.terra_sq2.id
+resource "aws_security_group" "SG-2" {
+  name        = "SSH&3000"
+  description = "Allow SSH & p 3000"
+  vpc_id      = module.network.vpc_id
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [module.network.cidr]
+
+  }
+
+  ingress {
+    description = "p3000"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [module.network.cidr]
+
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "${var.region}-SG-2"
+  }
+}
+
+resource "aws_security_group" "DB-test" {
+  name        = "DB-SG"
+  description = "DB"
+  vpc_id      = module.network.vpc_id
+
+  ingress {
+    description      = "Allow all"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = [module.network.cidr]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "${var.region}-SG-DB"
+  }
 }

@@ -5,7 +5,7 @@ resource "aws_subnet" "public-subnet-1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "TerraformPublicSubnet-1"
+    Name = "${var.WS}_pub-1"
   }
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "public-subnet-2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "TerraformPublicSubnet-2"
+    Name = "${var.WS}_pub-2"
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "private-subnet-1" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "TerraformPrivateSubnet-1"
+    Name = "${var.WS}_prive-1"
   }
 }
 
@@ -45,6 +45,6 @@ resource "aws_subnet" "private-subnet-2" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "TerraformPrivateSubnet-2"
+    Name = "${var.WS}_prive-2"
   }
 }

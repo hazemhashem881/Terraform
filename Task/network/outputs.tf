@@ -9,3 +9,7 @@ output public_subnet_id{
 output private_subnet_id{
     value =  aws_subnet.private-subnet-1.id
 }
+output cidr {
+
+    value       = aws_vpc.myvpc.cidr_block
+}
