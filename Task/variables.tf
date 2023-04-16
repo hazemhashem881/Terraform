@@ -35,3 +35,14 @@ variable WS {
 variable vpc_name {
   type = string
 }
+
+
+variable db_Pass{
+type  = string
+
+}
+
+variable db_User {
+  type        = string
+
+}
